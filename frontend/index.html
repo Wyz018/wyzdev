@@ -326,6 +326,42 @@
         </div>
     </div>
 
+    <script>
+        async function handleProfilePicUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('profilePic', file);
+
+  try {
+    const token = localStorage.getItem('token'); // adapte si tu stockes ton token ailleurs
+    const res = await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      alert('Erreur : ' + (error.msg || 'Erreur inconnue'));
+      return;
+    }
+
+    const data = await res.json();
+
+    document.getElementById('dashboardProfilePic').src = data.user.profilePic;
+
+    alert('Photo de profil mise à jour !');
+  } catch (err) {
+    console.error(err);
+    alert('Erreur lors de l\'upload de la photo');
+  }
+}
+    </script>
+
     <!-- Modal Login/Signup -->
     <div id="authModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="glass-effect rounded-xl p-8 max-w-md w-full">
