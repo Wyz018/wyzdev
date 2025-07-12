@@ -43,6 +43,9 @@ router.post('/login', async (req, res) => {
   console.log('Route /login appelée avec:', req.body);
 
   let { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ msg: "Email et mot de passe requis" });
+  }
   email = email.toLowerCase();
 
   try {
