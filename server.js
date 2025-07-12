@@ -24,6 +24,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Log chaque requête entrante (utile pour debug)
+app.use((req, res, next) => {
+  console.log(`Requête ${req.method} ${req.url}`);
+  next();
+});
+
 // Serve static files for profile pictures
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
@@ -67,7 +73,7 @@ mongoose.connect(MONGODB_URI, {
 })
   .then(() => {
     console.log('✅ Connecté à MongoDB');
-    
+
     // Create text indexes for search functionality
     mongoose.connection.db.collection('posts').createIndex(
       { title: 'text', content: 'text' },
@@ -75,10 +81,12 @@ mongoose.connect(MONGODB_URI, {
       (err) => {
         if (err && err.code !== 85) { // 85 = index already exists
           console.error('Erreur création index posts:', err);
+        } else {
+          console.log('✅ Index texte créé ou existant sur posts');
         }
       }
     );
-    
+
     // Start server after DB connection
     app.listen(PORT, () => {
       console.log(`✅ Backend WyzDev lancé sur le port ${PORT}`);
@@ -93,6 +101,7 @@ mongoose.connect(MONGODB_URI, {
 
 // 404 handler
 app.use((req, res) => {
+  console.warn(`Route non trouvée: ${req.method} ${req.path}`);
   res.status(404).json({ 
     message: 'Route non trouvée',
     path: req.path
@@ -101,7 +110,7 @@ app.use((req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Erreur serveur:', err.stack);
   res.status(500).json({ 
     message: 'Une erreur est survenue!',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined

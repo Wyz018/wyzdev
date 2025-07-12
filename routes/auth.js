@@ -33,21 +33,30 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ msg: "Utilisateur créé" });
   } catch (err) {
+    console.error('Erreur inscription:', err);
     res.status(500).json({ msg: "Erreur serveur" });
   }
 });
 
 // Connexion
 router.post('/login', async (req, res) => {
+  console.log('Route /login appelée avec:', req.body);
+
   let { email, password } = req.body;
   email = email.toLowerCase();
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: "Email incorrect" });
+    if (!user) {
+      console.warn('Login failed - email not found:', email);
+      return res.status(400).json({ msg: "Email incorrect" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Mot de passe incorrect" });
+    if (!isMatch) {
+      console.warn('Login failed - mot de passe incorrect pour:', email);
+      return res.status(400).json({ msg: "Mot de passe incorrect" });
+    }
 
     // Mettre à jour la dernière activité
     user.lastActive = new Date();
@@ -68,6 +77,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (err) {
+    console.error('Erreur login:', err);
     res.status(500).json({ msg: "Erreur serveur" });
   }
 });
