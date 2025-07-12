@@ -1,5 +1,4 @@
-// Configuration API
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = '/api';
 
 // État de l'application
 let currentUser = null;
@@ -916,3 +915,12 @@ window.onclick = function(event) {
         closeNotifications();
     }
 }
+fetch('/api/posts')
+  .then(res => res.json())
+  .then(data => {
+    // traitement des données reçues
+  })
+  .catch(error => {
+    console.error('Erreur lors de la récupération des posts :', error);
+  });
+
