@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #121212, #1e1e2f);
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: #1f1f2e;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      color: #8ab4f8;
+      font-weight: 600;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      user-select: none;
+      animation: slideDown 0.8s ease forwards;
+    }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    main {
+      flex: 1;
+      display: flex;
+      padding: 2rem;
+      gap: 2rem;
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    aside {
+      width: 250px;
+      background-color: #222233;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 0 15px rgba(138, 180, 248, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      user-select: none;
+    }
+    aside h2 {
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+      color: #8ab4f8;
+      border-bottom: 1px solid #3a3a5a;
+      padding-bottom: 0.5rem;
+    }
+    aside nav a {
+      color: #a0a0c0;
+      text-decoration: none;
+      padding: 0.5rem 0;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      font-weight: 500;
+    }
+    aside nav a:hover {
+      background-color: #3a3a5a;
+      color: #8ab4f8;
+    }
+    section.dashboard-content {
+      flex: 1;
+      background-color: #1f1f2e;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(138, 180, 248, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      overflow-y: auto;
+    }
+    section.dashboard-content h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: #8ab4f8;
+      user-select: none;
+      text-shadow: 0 0 8px #8ab4f8;
+    }
+    form#account-form {
+      background: #2a2a44;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(138, 180, 248, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 480px;
+      animation: slideUp 0.8s ease forwards;
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+      label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #c0c0e0;
+        text-align: center;
+        display: block;
+        width: 100%;
+      }
+      input[type="email"],
+      input[type="file"],
+      input[type="password"] {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 500;
+        background-color: #3a3a5a;
+        color: #e0e0e0;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+      }
+      input[type="email"]:focus,
+      input[type="file"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        background-color: #4a4a7a;
+        box-shadow: 0 0 8px #8ab4f8;
+      }
+    button {
+      background-color: #5a4fcf;
+      border: none;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      box-shadow: 0 0 10px #5a4fcf;
+    }
+    button:hover {
+      background-color: #483d9a;
+      box-shadow: 0 0 15px #483d9a;
+    }
+    #profile-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #8ab4f8;
+      margin-bottom: 1rem;
+      align-self: center;
+      box-shadow: 0 0 15px #8ab4f8;
+      transition: transform 0.3s ease;
+    }
+    #profile-preview:hover {
+      transform: scale(1.05);
+    }
+    #update-message {
+      color: #38a169;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      user-select: none;
+    }
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(18, 18, 18, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #overlay .icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 72px;
+      color: white;
+      animation: popIn 0.5s ease forwards;
+      user-select: none;
+    }
+    #overlay .icon.success {
+      background-color: #38a169;
+      box-shadow: 0 0 20px #38a169;
+    }
+    #overlay .icon.error {
+      background-color: #e53e3e;
+      box-shadow: 0 0 20px #e53e3e;
+    }
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Mon Dashboard</header>
+  <main>
+    <aside>
+      <h2>Menu</h2>
+      <nav style="display: flex; flex-direction: column; gap: 1rem;">
+        <a href="index.html">Accueil</a>
+        <a href="success.html" aria-current="page">Mon Compte</a>
+        <a href="#">Paramètres</a>
+        <a href="#" id="logout-link">Déconnexion</a>
+      </nav>
+    </aside>
+    <section class="dashboard-content">
+      <h1>Mon Compte</h1>
+      <form id="account-form">
+        <img id="profile-preview" src="https://via.placeholder.com/120" alt="Photo de profil" />
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="user@example.com" required />
+        <label for="profile-pic">Photo de profil</label>
+        <label for="profile-pic" class="custom-file-upload" style="display: block; margin: 0 auto; width: fit-content;">Choisir un fichier</label>
+        <input type="file" id="profile-pic" name="profilePic" accept="image/*" style="display:none;" />
+        <style>
+          .custom-file-upload {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            background-color: #3a3a5a;
+            color: #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            user-select: none;
+          }
+          .custom-file-upload:hover {
+            background-color: #4a4a7a;
+            transform: scale(1.05);
+          }
+        </style>
+        <label for="password">Modifier mon mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="Laissez vide si vous ne voulez pas changer" style="background-color: #3a3a5a; color: #e0e0e0; border-radius: 8px; padding: 0.75rem 1rem; font-size: 1rem; font-weight: 500; border: none; transition: background-color 0.3s ease; width: 100%;" />
+        <button type="submit">Enregistrer</button>
+        <div id="update-message">Modification effectuée avec succès</div>
+      </form>
+    </section>
+  </main>
+  <div id="overlay">
+    <div class="icon"></div>
+  </div>
+  <script>
+    const profilePicInput = document.getElementById('profile-pic');
+    const profilePreview = document.getElementById('profile-preview');
+    const emailInput = document.getElementById('email');
+    const accountForm = document.getElementById('account-form');
+
+    async function loadUserData() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Vous devez être connecté.');
+        window.location.href = 'index.html';
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:5001/api/user/profile', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Erreur lors du chargement des données');
+        const data = await res.json();
+        emailInput.value = data.email || '';
+        profilePreview.src = data.profilePic ? 'http://localhost:5001' + data.profilePic + '?t=' + new Date().getTime() : './default-profile.png';
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    profilePicInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profilePreview.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    const overlay = document.getElementById('overlay');
+    const overlayIcon = overlay.querySelector('.icon');
+
+    function showOverlay(success) {
+      if (success) {
+        overlayIcon.className = 'icon success';
+        overlayIcon.textContent = '✔';
+      } else {
+        overlayIcon.className = 'icon error';
+        overlayIcon.textContent = '✖';
+      }
+      overlay.classList.add('visible');
+      setTimeout(() => {
+        overlay.classList.remove('visible');
+      }, 3000);
+    }
+
+    accountForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Vous devez être connecté.');
+        window.location.href = 'index.html';
+        return;
+      }
+      const emailChanged = emailInput.value !== emailInput.defaultValue;
+      const fileChanged = profilePicInput.files.length > 0;
+      const passwordInput = document.getElementById('password');
+      const passwordChanged = passwordInput.value.trim() !== '';
+      if (!emailChanged && !fileChanged && !passwordChanged) {
+        showOverlay(false);
+        alert('Aucune modification détectée.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('email', emailInput.value);
+      if (fileChanged) {
+        formData.append('profilePic', profilePicInput.files[0]);
+      }
+      if (passwordChanged) {
+        formData.append('password', passwordInput.value);
+      }
+      try {
+        let res = await fetch('http://localhost:5001/api/user/profile', {
+          method: 'PUT',
+          headers: {
+            Authorization: 'Bearer ' + token
+          },
+          body: formData
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error('Erreur lors de la mise à jour: ' + errorText);
+        }
+        showOverlay(true);
+        loadUserData();
+      } catch (err) {
+        showOverlay(false);
+        alert(err.message);
+      }
+    });
+
+    loadUserData();
+
+    // Add logout functionality
+    const logoutLink = document.getElementById('logout-link');
+    logoutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - WyzDev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animations personnalisées */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-grow {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-grow:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a202c;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #667eea;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="glass-effect fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-8">
+                <h1 class="text-2xl font-bold gradient-bg text-transparent bg-clip-text cursor-pointer">
+                    <a href="index.html">WyzDev</a>
+                </h1>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="hover:text-purple-400 transition-colors">Accueil</a>
+                    <a href="index.html#forum" class="hover:text-purple-400 transition-colors">Forum</a>
+                    <a href="about.html" class="text-purple-400">À propos</a>
+                    <a href="contact.html" class="hover:text-purple-400 transition-colors">Contact</a>
+                </div>
+            </div>
+            <div class="flex space-x-4" id="authButtons">
+                <button onclick="window.location.href='index.html'" class="px-4 py-2 border border-purple-500 rounded-lg hover:bg-purple-500 transition-all">
+                    Se connecter
+                </button>
+                <button onclick="window.location.href='index.html'" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                    S'inscrire
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="min-h-screen pt-20">
+        <div class="max-w-4xl mx-auto px-6 py-8 animate-fadeIn">
+            <h1 class="text-4xl font-bold mb-8 text-center">À propos de WyzDev</h1>
+            
+            <div class="glass-effect p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-4">Notre Mission</h2>
+                <p class="text-gray-300 mb-4">
+                    WyzDev est né de la passion de développeurs pour le partage de connaissances. Notre mission est de créer 
+                    un espace où chaque développeur, qu'il soit débutant ou expert, peut trouver de l'aide, partager ses 
+                    expériences et grandir professionnellement.
+                </p>
+                <p class="text-gray-300 mb-4">
+                    Nous croyons que la collaboration et l'entraide sont les clés pour devenir de meilleurs développeurs. 
+                    C'est pourquoi nous avons créé cette plateforme où les questions trouvent des réponses, où les problèmes 
+                    trouvent des solutions, et où les idées deviennent réalité.
+                </p>
+            </div>
+
+            <div class="glass-effect p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-4">Notre Histoire</h2>
+                <p class="text-gray-300 mb-4">
+                    Fondé en 2024, WyzDev est rapidement devenu une référence pour les développeurs francophones. 
+                    Ce qui a commencé comme un petit forum entre amis est maintenant une communauté vibrante de 
+                    milliers de développeurs passionnés.
+                </p>
+                <p class="text-gray-300">
+                    Chaque jour, des centaines de questions trouvent leurs réponses, des projets naissent de 
+                    collaborations spontanées, et des carrières se transforment grâce au partage de connaissances.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-effect p-6 rounded-xl hover-grow">
+                    <h3 class="text-xl font-bold mb-3">Nos Valeurs</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• Partage des connaissances</li>
+                        <li>• Respect et bienveillance</li>
+                        <li>• Innovation continue</li>
+                        <li>• Accessibilité pour tous</li>
+                        <li>• Qualité du code</li>
+                        <li>• Apprentissage continu</li>
+                    </ul>
+                </div>
+                <div class="glass-effect p-6 rounded-xl hover-grow">
+                    <h3 class="text-xl font-bold mb-3">Notre Équipe</h3>
+                    <p class="text-gray-300 mb-3">
+                        WyzDev est géré par une équipe de développeurs passionnés qui comprennent les défis 
+                        quotidiens du métier.
+                    </p>
+                    <p class="text-gray-300">
+                        Nous sommes constamment à l'écoute de notre communauté pour améliorer la plateforme 
+                        et répondre aux besoins de chacun.
+                    </p>
+                </div>
+            </div>
+
+            <div class="glass-effect p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-4">Rejoignez l'Aventure</h2>
+                <p class="text-gray-300 mb-4">
+                    Que vous soyez un développeur chevronné ou que vous débutiez votre parcours, 
+                    WyzDev est là pour vous accompagner. Notre communauté est ouverte à tous ceux qui 
+                    partagent notre passion pour le code et l'apprentissage.
+                </p>
+                <div class="flex justify-center mt-6">
+                    <button onclick="window.location.href='index.html'" class="px-8 py-4 bg-purple-600 rounded-full hover:bg-purple-700 transition-all hover-grow">
+                        Rejoindre la Communauté
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="gradient-bg rounded-xl p-8 text-center">
+                <h2 class="text-2xl font-bold mb-6">WyzDev en Chiffres</h2>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div>
+                        <h3 class="text-4xl font-bold">10K+</h3>
+                        <p class="text-lg">Développeurs actifs</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-bold">50K+</h3>
+                        <p class="text-lg">Questions résolues</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-bold">100K+</h3>
+                        <p class="text-lg">Lignes de code partagées</p>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-bold">15+</h3>
+                        <p class="text-lg">Langages supportés</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-effect mt-20 py-8">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-400">© 2024 WyzDev. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

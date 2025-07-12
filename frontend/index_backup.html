@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>WyzDev - Forum d'aide au développement</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #12122f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f1f3a;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #8a63d9;
+      user-select: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      color: #c0c0e0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #8a63d9;
+    }
+
+    nav .auth-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav .auth-buttons button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #8a63d9;
+      background: transparent;
+      color: #8a63d9;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav .auth-buttons button.signup {
+      background-color: #8a63d9;
+      color: white;
+      border: none;
+    }
+
+    nav .auth-buttons button:hover {
+      background-color: #8a63d9;
+      color: white;
+    }
+
+    header.hero {
+      background: linear-gradient(135deg, #2e2a4a, #1f1f3a);
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    header.hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #8a63d9;
+      margin: 0;
+      user-select: none;
+    }
+
+    header.hero p.subtitle {
+      font-size: 1.25rem;
+      color: #ddd;
+      margin: 0;
+    }
+
+    header.hero p.tagline {
+      font-size: 1rem;
+      color: #aaa;
+      margin: 0;
+      font-style: italic;
+    }
+
+    header.hero .buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    header.hero .buttons button {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      border: 2px solid #8a63d9;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+
+    header.hero .buttons button.explore {
+      background-color: #8a63d9;
+      color: white;
+      border: none;
+    }
+
+    header.hero .buttons button.explore:hover {
+      background-color: #6f4fcf;
+    }
+
+    header.hero .buttons button.join {
+      background-color: transparent;
+      color: #8a63d9;
+    }
+
+    header.hero .buttons button.join:hover {
+      background-color: #8a63d9;
+      color: white;
+    }
+
+    section.features {
+      background-color: #1f1f3a;
+      padding: 4rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    section.features .feature-card {
+      background-color: #2e2a4a;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 280px;
+      box-shadow: 0 0 15px rgba(138, 99, 217, 0.5);
+      color: #ddd;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    section.features .feature-card h3 {
+      margin: 0;
+      font-weight: 700;
+      color: #8a63d9;
+    }
+
+    section.features .feature-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #bbb;
+      line-height: 1.4;
+    }
+
+    section.features .feature-icon {
+      font-size: 2rem;
+      color: #8a63d9;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #2e2a4a, #1f1f3a);
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(138, 99, 217, 0.7);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover {
+      color: #8a63d9;
+    }
+
+    .form-container {
+      text-align: center;
+    }
+
+    .form-container h2 {
+      color: #8a63d9;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #3a3a5a;
+      color: #e0e0e0;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .form-container input:focus {
+      outline: none;
+      background-color: #4a4a7a;
+      box-shadow: 0 0 8px #8a63d9;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 1rem 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #8a63d9;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-container button:hover {
+      background-color: #6f4fcf;
+    }
+
+    .form-container .toggle-link {
+      color: #8a63d9;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+
+    .form-container .toggle-link:hover {
+      color: #6f4fcf;
+    }
+
+    .message {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .message.success {
+      background-color: rgba(56, 161, 105, 0.2);
+      color: #38a169;
+      border: 1px solid #38a169;
+    }
+
+    .message.error {
+      background-color: rgba(229, 62, 62, 0.2);
+      color: #e53e3e;
+      border: 1px solid #e53e3e;
+    }
+
+    .password-strength {
+      width: 100%;
+      height: 4px;
+      background-color: #3a3a5a;
+      border-radius: 2px;
+      margin: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background-color 0.3s;
+      border-radius: 2px;
+    }
+
+    .password-strength-text {
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      text-align: left;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      header.hero {
+        padding: 4rem 1rem 3rem;
+      }
+      header.hero h1 {
+        font-size: 2.25rem;
+      }
+      section.features {
+        flex-direction: column;
+        align-items: center;
+      }
+      section.features .feature-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">WyzDev</div>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="#" onclick="alert('Forum bientôt disponible!')">Forum</a></li>
+      <li><a href="about.html">À propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <button id="login-btn" onclick="openModal('login')">Se connecter</button>
+      <button id="signup-btn" class="signup" onclick="openModal('signup')">S'inscrire</button>
+    </div>
+  </nav>
+  
+  <header class="hero">
+    <h1>WyzDev</h1>
+    <p class="subtitle">Votre communauté de développeurs passionnés</p>
+    <p class="tagline">Partagez, apprenez, évoluez ensemble</p>
+    <div class="buttons">
+      <button class="explore" onclick="alert('Forum bientôt disponible!')">Explorer le Forum</button>
+      <button class="join" onclick="openModal('signup')">Rejoindre la Communauté</button>
+    </div>
+  </header>
+  
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">{ }</div>
+      <h3>Code de qualité</h3>
+      <p>Des solutions élégantes et optimisées partagées par des développeurs expérimentés</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">[ ]</div>
+      <h3>Tous les langages</h3>
+      <p>JavaScript, Python, Java, C++, et bien plus encore. Trouvez de l'aide pour n'importe quel langage</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">[ ]</div>
+      <h3>Communauté active</h3>
+      <p>Des milliers de développeurs prêts à vous aider et à partager leurs connaissances</p>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="form-container">
+        <h2 id="form-title">Connexion</h2>
+        <div id="msg" class="message"></div>
+        
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <input type="password" id="confirm-password" placeholder="Confirmer le mot de passe" style="display: none;" required>
+        
+        <div id="password-strength" class="password-strength" style="display: none;">
+          <div id="password-strength-bar" class="password-strength-bar"></div>
+        </div>
+        <div id="password-strength-text" class="password-strength-text" style="display: none;"></div>
+        
+        <button onclick="handleAuth()">Se connecter</button>
+        <div class="toggle-link" id="toggle" onclick="toggleForm()">Créer un compte</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS
+    (function(){
+      emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
+    })();
+  </script>
+  <script src="script.js"></script>
+  <script>
+    function openModal(type) {
+      document.getElementById('authModal').style.display = 'block';
+      if (type === 'signup') {
+        toggleForm();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('authModal').style.display = 'none';
+      // Reset form
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('confirm-password').value = '';
+      document.getElementById('msg').textContent = '';
+      document.getElementById('msg').className = 'message';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('authModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

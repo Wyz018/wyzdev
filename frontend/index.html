@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WyzDev - Forum d'aide au code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://i.ibb.co/B5wfRrzL/Capture-d-cran-2025-07-11-182333.png" type="image/png" />
+
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hover-grow { transition: transform 0.3s ease; }
+        .hover-grow:hover { transform: scale(1.05); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.8s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="glass-effect fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-8">
+                <h1 class="text-2xl font-bold gradient-bg text-transparent bg-clip-text cursor-pointer" onclick="showPage('home')">WyzDev BETA</h1>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" onclick="showPage('home')" class="hover:text-purple-400 transition-colors">Accueil</a>
+                    <a href="#" onclick="showPage('forum')" class="hover:text-purple-400 transition-colors">Forum</a>
+                    <a href="#" onclick="showPage('about')" class="hover:text-purple-400 transition-colors">À propos</a>
+                    <a href="#" onclick="showPage('contact')" class="hover:text-purple-400 transition-colors">Contact</a>
+                </div>
+            </div>
+            <div class="flex space-x-4" id="authButtons">
+                <button onclick="showModal('login')" class="px-4 py-2 border border-purple-500 rounded-lg hover:bg-purple-500 transition-all">
+                    Se connecter
+                </button>
+                <button onclick="showModal('signup')" class="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                    S'inscrire
+                </button>
+            </div>
+            <div class="hidden flex items-center space-x-3" id="userMenu">
+                <div class="w-8 h-8 rounded-full border-2 border-purple-400 flex-shrink-0">
+                    <img id="userProfilePic" src="" alt="Photo de profil" class="w-full h-full rounded-full object-cover hidden">
+                    <div id="defaultAvatar" class="w-full h-full rounded-full bg-purple-600 flex items-center justify-center text-sm font-bold hidden"></div>
+                </div>
+                <span class="text-purple-400" id="username"></span>
+                <button onclick="showNotifications()" class="relative p-2 hover:bg-purple-600/20 rounded-lg transition-all">
+                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                    <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="showPage('dashboard')" class="px-3 py-1 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all text-sm">
+                    Dashboard
+                </button>
+                <button onclick="logout()" class="px-3 py-1 bg-red-600 rounded-lg hover:bg-red-700 transition-all text-sm">
+                    Déconnexion
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Accueil -->
+    <div id="home" class="page active min-h-screen pt-20">
+        <section class="relative overflow-hidden py-20">
+            <div class="gradient-bg absolute inset-0 opacity-20"></div>
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center animate-fadeIn">
+                    <h1 class="text-6xl md:text-7xl font-bold mb-6">
+                        <span class="gradient-bg text-transparent bg-clip-text">WyzDev BETA</span>
+                    </h1>
+                    <p class="text-3xl mb-4">Votre communauté de développeurs passionnés</p>
+                    <p class="text-xl text-gray-400 mb-8">Partagez, apprenez, évoluez ensemble</p>
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="showPage('forum')" class="px-8 py-4 bg-purple-600 rounded-full hover:bg-purple-700 transition-all hover-grow">
+                            Explorer le Forum
+                        </button>
+                        <button onclick="showModal('signup')" class="px-8 py-4 border border-purple-500 rounded-full hover:bg-purple-500/20 transition-all">
+                            Rejoindre la Communauté
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Pourquoi choisir WyzDev?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-effect p-8 rounded-xl hover-grow">
+                        <div class="text-purple-500 text-5xl mb-4">{ }</div>
+                        <h3 class="text-2xl font-bold mb-4">Code de qualité</h3>
+                        <p class="text-gray-400">Des solutions élégantes et optimisées partagées par des développeurs expérimentés</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-xl hover-grow">
+                        <div class="text-purple-500 text-5xl mb-4">/</div>
+                        <h3 class="text-2xl font-bold mb-4">Tous les langages</h3>
+                        <p class="text-gray-400">JavaScript, Python, Java, C++, et bien plus encore. Trouvez de l'aide pour n'importe quel langage</p>
+                    </div>
+                    <div class="glass-effect p-8 rounded-xl hover-grow">
+                        <div class="text-purple-500 text-5xl mb-4">[ ]</div>
+                        <h3 class="text-2xl font-bold mb-4">Communauté active</h3>
+                        <p class="text-gray-400">Des milliers de développeurs prêts à vous aider et à partager leurs connaissances</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 gradient-bg">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-5xl font-bold">10K+</h3>
+                        <p class="text-xl">Développeurs actifs</p>
+                    </div>
+                    <div>
+                        <h3 class="text-5xl font-bold">50K+</h3>
+                        <p class="text-xl">Questions résolues</p>
+                    </div>
+                    <div>
+                        <h3 class="text-5xl font-bold">100K+</h3>
+                        <p class="text-xl">Lignes de code partagées</p>
+                    </div>
+                    <div>
+                        <h3 class="text-5xl font-bold">24/7</h3>
+                        <p class="text-xl">Support communautaire</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Page Forum -->
+    <div id="forum" class="page min-h-screen pt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-4xl font-bold">Forum WyzDev</h1>
+                <button onclick="showCreatePost()" class="px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                    + Créer un Post
+                </button>
+            </div>
+
+            <div class="flex space-x-4 mb-8 overflow-x-auto">
+                <button onclick="filterPosts('all')" class="px-4 py-2 bg-purple-600 rounded-full category-btn" data-category="all">Tous</button>
+                <button onclick="filterPosts('JavaScript')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="JavaScript">JavaScript</button>
+                <button onclick="filterPosts('Python')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="Python">Python</button>
+                <button onclick="filterPosts('Java')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="Java">Java</button>
+                <button onclick="filterPosts('C++')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="C++">C++</button>
+                <button onclick="filterPosts('Web Dev')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="Web Dev">Web Dev</button>
+                <button onclick="filterPosts('Mobile')" class="px-4 py-2 glass-effect rounded-full hover:bg-purple-600/20 category-btn" data-category="Mobile">Mobile</button>
+            </div>
+
+            <div class="space-y-4" id="postsContainer">
+                <p class="text-gray-400 text-center">Chargement des posts...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page À propos -->
+    <div id="about" class="page min-h-screen pt-20">
+        <div class="max-w-4xl mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold mb-8 text-center">À propos de WyzDev</h1>
+            <div class="glass-effect p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-4">Notre Mission</h2>
+                <p class="text-gray-300 mb-4">
+                    WyzDev est né de la passion de développeurs pour le partage de connaissances. Notre mission est de créer 
+                    un espace où chaque développeur, qu'il soit débutant ou expert, peut trouver de l'aide, partager ses 
+                    expériences et grandir professionnellement.
+                </p>
+                <p class="text-gray-300 mb-4">
+                    Nous croyons que la collaboration et l'entraide sont les clés pour devenir de meilleurs développeurs. 
+                    C'est pourquoi nous avons créé cette plateforme où les questions trouvent des réponses, où les problèmes 
+                    trouvent des solutions, et où les idées deviennent réalité.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-effect p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">Nos Valeurs</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• Partage des connaissances</li>
+                        <li>• Respect et bienveillance</li>
+                        <li>• Innovation continue</li>
+                        <li>• Accessibilité pour tous</li>
+                    </ul>
+                </div>
+                <div class="glass-effect p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">Rejoignez-nous</h3>
+                    <p class="text-gray-300">
+                        Que vous soyez un développeur chevronné ou que vous débutiez votre parcours, 
+                        WyzDev est là pour vous accompagner. Rejoignez notre communauté grandissante!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Contact -->
+    <div id="contact" class="page min-h-screen pt-20">
+        <div class="max-w-4xl mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold mb-8 text-center">Contactez-nous</h1>
+            <div class="glass-effect p-8 rounded-xl">
+                <form onsubmit="handleContact(event)">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block mb-2">Nom</label>
+                            <input type="text" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Email</label>
+                            <input type="email" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block mb-2">Sujet</label>
+                        <input type="text" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block mb-2">Message</label>
+                        <textarea rows="6" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                        Envoyer le message
+                    </button>
+                </form>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-400 mb-4">Ou contactez-nous directement:</p>
+                <p class="text-purple-400">contact@wyzdev.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Dashboard -->
+    <div id="dashboard" class="page min-h-screen pt-20">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold mb-8">Dashboard - Gestion du Profil</h1>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="glass-effect p-6 rounded-xl">
+                        <div class="text-center mb-6">
+                            <div class="relative inline-block">
+                                <img id="dashboardProfilePic" src="https://via.placeholder.com/120/8a63d9/ffffff?text=User" alt="Photo de profil" class="w-30 h-30 rounded-full border-4 border-purple-400 mx-auto mb-4">
+                                <button onclick="document.getElementById('profilePicInput').click()" class="absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </button>
+                                <input type="file" id="profilePicInput" accept="image/*" class="hidden" onchange="handleProfilePicUpload(event)">
+                            </div>
+                            <h2 class="text-2xl font-bold text-purple-400" id="dashboardUsername">Nom d'utilisateur</h2>
+                            <p class="text-gray-400" id="dashboardEmail">email@example.com</p>
+                            <p class="text-sm text-gray-500 mt-2">Membre depuis <span id="joinDate">-</span></p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Statistiques</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Posts créés:</span>
+                                        <span id="userPostCount">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Réponses:</span>
+                                        <span id="userReplyCount">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4">Informations générales</h3>
+                        <form onsubmit="handleUpdateProfile(event)">
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block mb-2">Nom d'utilisateur</label>
+                                    <input type="text" id="editUsername" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Email</label>
+                                    <input type="email" id="editEmail" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                                <input type="password" id="editPassword" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            <button type="submit" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                                Mettre à jour le profil
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4">Mes Posts</h3>
+                        <div id="userPosts" class="space-y-4">
+                            <p class="text-gray-400">Chargement de vos posts...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login/Signup -->
+    <div id="authModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-effect rounded-xl p-8 max-w-md w-full">
+            <h2 id="modalTitle" class="text-3xl font-bold mb-6"></h2>
+            
+            <form id="loginForm" class="hidden" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2">Mot de passe</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all mb-4">
+                    Se connecter
+                </button>
+                <p class="text-center text-gray-400">
+                    Pas encore de compte? 
+                    <a href="#" onclick="showModal('signup')" class="text-purple-400 hover:underline">S'inscrire</a>
+                </p>
+            </form>
+            
+            <form id="signupForm" class="hidden" onsubmit="handleSignup(event)">
+                <div class="mb-4">
+                    <label class="block mb-2">Nom d'utilisateur</label>
+                    <input type="text" id="signupUsername" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required minlength="3">
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2">Email</label>
+                    <input type="email" id="signupEmail" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2">Mot de passe</label>
+                    <input type="password" id="signupPassword" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required minlength="6">
+                </div>
+                <button type="submit" class="w-full px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all mb-4">
+                    S'inscrire
+                </button>
+                <p class="text-center text-gray-400">
+                    Déjà un compte? 
+                    <a href="#" onclick="showModal('login')" class="text-purple-400 hover:underline">Se connecter</a>
+                </p>
+            </form>
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Create Post -->
+    <div id="createPostModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-effect rounded-xl p-8 max-w-2xl w-full">
+            <h2 class="text-3xl font-bold mb-6">Créer un nouveau post</h2>
+            
+            <form onsubmit="handleCreatePost(event)">
+                <div class="mb-4">
+                    <label class="block mb-2">Titre</label>
+                    <input type="text" id="postTitle" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2">Catégorie</label>
+                    <select id="postCategory" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <option value="">Sélectionnez une catégorie</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                        <option value="C++">C++</option>
+                        <option value="SQL">SQL</option>
+                        <option value="Web Dev">Web Dev</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2">Description</label>
+                    <textarea id="postContent" rows="6" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Décrivez votre problème ou question en détail..." required></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2">Code (optionnel)</label>
+                    <textarea id="postCode" rows="4" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono" placeholder="Collez votre code ici..."></textarea>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 px-6 py-3 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                        Publier
+                    </button>
+                    <button type="button" onclick="closeCreatePost()" class="flex-1 px-6 py-3 border border-gray-600 rounded-lg hover:bg-gray-800 transition-all">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal View Post -->
+    <div id="viewPostModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-effect rounded-xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-6">
+                <h2 id="postDetailTitle" class="text-3xl font-bold"></h2>
+                <button onclick="closeViewPost()" class="text-gray-400 hover:text-white">
+                    ✕
+                </button>
+            </div>
+            
+            <div id="postDetailContent" class="mb-6">
+                <!-- Le contenu du post sera inséré ici -->
+            </div>
+            
+            <div class="border-t border-gray-700 pt-6">
+                <h3 class="text-xl font-bold mb-4">Réponses</h3>
+                <div id="repliesContainer" class="space-y-4 mb-6">
+                    <!-- Les réponses seront insérées ici -->
+                </div>
+
+                <div id="postActions" class="flex justify-center space-x-3 mb-4">
+                    <button id="btnToggleResolved" onclick="handleToggleResolved()" class="group relative px-3 py-1.5 text-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Marquer résolu</span>
+                    </button>
+                    <button id="btnDeletePost" onclick="handleDeletePost()" class="group relative px-3 py-1.5 text-sm bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-full hover:from-red-600 hover:to-rose-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-1.5">
+                        <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>Supprimer</span>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleAddReply(event)" class="mt-6">
+                    <textarea id="replyContent" rows="3" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ajouter une réponse..." required></textarea>
+                    <button type="submit" class="mt-2 px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                        Répondre
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Notifications -->
+    <div id="notificationsModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-effect rounded-xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold">Notifications</h2>
+                <div class="flex space-x-2">
+                    <button onclick="markAllNotificationsRead()" class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-all text-sm">
+                        Tout marquer lu
+                    </button>
+                    <button onclick="closeNotifications()" class="text-gray-400 hover:text-white">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            
+            <div id="notificationsContainer" class="space-y-4">
+                <p class="text-gray-400 text-center">Chargement des notifications...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+
+    
+</body>
+</html>
