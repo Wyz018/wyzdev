@@ -59,9 +59,12 @@ app.use('/api/replies', replyRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/auth-panel';
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/auth-panel';
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('✅ Connecté à MongoDB');
     
