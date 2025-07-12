@@ -11,15 +11,13 @@ import replyRoutes from './routes/replies.js';
 import notificationRoutes from './routes/notifications.js';
 import path from 'path';
 
-import dotenv from 'dotenv';
-dotenv.config();  // une seule fois, juste après l'import
+dotenv.config();  // une seule fois, juste après les imports
 
 // Récupère l'URL MongoDB depuis les variables d'environnement ou utilise une valeur par défaut
 const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/auth-panel';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-
 
 // Middleware
 app.use(cors());
@@ -63,8 +61,6 @@ app.use('/api/replies', replyRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/auth-panel';
-
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -111,4 +107,3 @@ app.use((err, req, res, next) => {
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
-
