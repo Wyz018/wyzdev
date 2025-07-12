@@ -250,259 +250,117 @@
     </div>
 
     <!-- Page Dashboard -->
-<div id="dashboard" class="page min-h-screen pt-20">
-  <div class="max-w-6xl mx-auto px-6 py-8">
-    <h1 class="text-4xl font-bold mb-8">Dashboard - Gestion du Profil</h1>
-
-    <div class="grid lg:grid-cols-3 gap-8">
-      <div class="lg:col-span-1">
-        <div class="glass-effect p-6 rounded-xl">
-          <div class="text-center mb-6">
-            <div class="relative inline-block">
-              <img
-                id="dashboardProfilePic"
-                src="https://via.placeholder.com/120/8a63d9/ffffff?text=User"
-                alt="Photo de profil"
-                class="w-30 h-30 rounded-full border-4 border-purple-400 mx-auto mb-4"
-              />
-              <button
-                onclick="document.getElementById('profilePicInput').click()"
-                class="absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2 transition-all"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  ></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-              </button>
-              <input
-                type="file"
-                id="profilePicInput"
-                accept="image/*"
-                class="hidden"
-                onchange="handleProfilePicUpload(event)"
-              />
-            </div>
-            <h2 id="dashboardUsername" class="text-2xl font-bold text-purple-400">Nom d'utilisateur</h2>
-            <p id="dashboardEmail" class="text-gray-400">email@example.com</p>
-            <p class="text-sm text-gray-500 mt-2">
-              Membre depuis <span id="joinDate">-</span>
-            </p>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <h3 class="text-lg font-semibold mb-2">Statistiques</h3>
-              <div class="space-y-2 text-sm">
-                <div class="flex justify-between">
-                  <span>Posts créés:</span> <span id="userPostCount">0</span>
+    <div id="dashboard" class="page min-h-screen pt-20">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold mb-8">Dashboard - Gestion du Profil</h1>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="glass-effect p-6 rounded-xl">
+                        <div class="text-center mb-6">
+                            <div class="relative inline-block">
+                                <img id="dashboardProfilePic" src="https://via.placeholder.com/120/8a63d9/ffffff?text=User" alt="Photo de profil" class="w-30 h-30 rounded-full border-4 border-purple-400 mx-auto mb-4">
+                                <button onclick="document.getElementById('profilePicInput').click()" class="absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-2 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </button>
+                                <input type="file" id="profilePicInput" accept="image/*" class="hidden" onchange="handleProfilePicUpload(event)">
+                            </div>
+                            <h2 class="text-2xl font-bold text-purple-400" id="dashboardUsername">Nom d'utilisateur</h2>
+                            <p class="text-gray-400" id="dashboardEmail">email@example.com</p>
+                            <p class="text-sm text-gray-500 mt-2">Membre depuis <span id="joinDate">-</span></p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Statistiques</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Posts créés:</span>
+                                        <span id="userPostCount">0</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Réponses:</span>
+                                        <span id="userReplyCount">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex justify-between">
-                  <span>Réponses:</span> <span id="userReplyCount">0</span>
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4">Informations générales</h3>
+                        <form onsubmit="handleUpdateProfile(event)">
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block mb-2">Nom d'utilisateur</label>
+                                    <input type="text" id="editUsername" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Email</label>
+                                    <input type="email" id="editEmail" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                                <input type="password" id="editPassword" class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            </div>
+                            <button type="submit" class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all">
+                                Mettre à jour le profil
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-4">Mes Posts</h3>
+                        <div id="userPosts" class="space-y-4">
+                            <p class="text-gray-400">Chargement de vos posts...</p>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-
-      <div class="lg:col-span-2 space-y-6">
-        <div class="glass-effect p-6 rounded-xl">
-          <h3 class="text-2xl font-bold mb-4">Informations générales</h3>
-          <form onsubmit="handleUpdateProfile(event)">
-            <div class="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block mb-2">Nom d'utilisateur</label>
-                <input
-                  type="text"
-                  id="editUsername"
-                  class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-              <div>
-                <label class="block mb-2">Email</label>
-                <input
-                  type="email"
-                  id="editEmail"
-                  class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-            </div>
-            <div class="mb-4">
-              <label class="block mb-2">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
-              <input
-                type="password"
-                id="editPassword"
-                class="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-            <button
-              type="submit"
-              class="px-6 py-2 bg-purple-600 rounded-lg hover:bg-purple-700 transition-all"
-            >
-              Mettre à jour le profil
-            </button>
-          </form>
-        </div>
-
-        <div class="glass-effect p-6 rounded-xl">
-          <h3 class="text-2xl font-bold mb-4">Mes Posts</h3>
-          <div id="userPosts" class="space-y-4">
-            <p class="text-gray-400">Chargement de vos posts...</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<script>
-  async function handleProfilePicUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+    <script>
+        async function handleProfilePicUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append('profilePic', file);
+  const formData = new FormData();
+  formData.append('profilePic', file);
 
-    try {
-      const token = localStorage.getItem('token'); // adapte si tu stockes ton token ailleurs
-      const res = await fetch('/api/user/profile', {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+  try {
+    const token = localStorage.getItem('token'); // adapte si tu stockes ton token ailleurs
+    const res = await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
 
-      if (!res.ok) {
-        const error = await res.json();
-        alert('Erreur : ' + (error.msg || 'Erreur inconnue'));
-        return;
-      }
-
-      const data = await res.json();
-
-      document.getElementById('dashboardProfilePic').src = data.user.profilePic;
-
-      alert('Photo de profil mise à jour !');
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de l'upload de la photo");
+    if (!res.ok) {
+      const error = await res.json();
+      alert('Erreur : ' + (error.msg || 'Erreur inconnue'));
+      return;
     }
+
+    const data = await res.json();
+
+    document.getElementById('dashboardProfilePic').src = data.user.profilePic;
+
+    alert('Photo de profil mise à jour !');
+  } catch (err) {
+    console.error(err);
+    alert('Erreur lors de l\'upload de la photo');
   }
-
-  async function loadUserProfile() {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('/api/user/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error('Erreur récupération profil');
-      const data = await res.json();
-
-      // Mise à jour infos utilisateur dans le dashboard
-      document.getElementById('dashboardUsername').textContent = data.user.username;
-      document.getElementById('dashboardEmail').textContent = data.user.email;
-      document.getElementById('dashboardProfilePic').src =
-        data.user.profilePic || 'https://via.placeholder.com/120/8a63d9/ffffff?text=User';
-      // Si tu as la date d'inscription
-      if (data.user.createdAt) {
-        const d = new Date(data.user.createdAt);
-        document.getElementById('joinDate').textContent = d.toLocaleDateString();
-      }
-
-      // Remplir les champs du formulaire d’édition
-      document.getElementById('editUsername').value = data.user.username || '';
-      document.getElementById('editEmail').value = data.user.email || '';
-
-      // Mettre à jour statistiques si disponibles
-      if (data.user.postCount !== undefined) {
-        document.getElementById('userPostCount').textContent = data.user.postCount;
-      }
-      if (data.user.replyCount !== undefined) {
-        document.getElementById('userReplyCount').textContent = data.user.replyCount;
-      }
-
-      // Charger les posts de l’utilisateur
-      loadUserPosts(data.user._id);
-    } catch (err) {
-      console.error(err);
-      alert('Erreur chargement profil');
-    }
-  }
-
-  async function loadUserPosts(userId) {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`/api/posts/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error('Erreur récupération posts');
-      const posts = await res.json();
-
-      const postsContainer = document.getElementById('userPosts');
-      if (!posts.length) {
-        postsContainer.innerHTML = '<p>Aucun post trouvé.</p>';
-        return;
-      }
-      postsContainer.innerHTML = '';
-      posts.forEach((post) => {
-        const div = document.createElement('div');
-        div.className = 'post-item p-4 bg-gray-800 rounded-lg';
-        div.textContent = post.title || 'Titre non défini';
-        postsContainer.appendChild(div);
-      });
-    } catch (err) {
-      console.error(err);
-      document.getElementById('userPosts').innerHTML = '<p>Erreur chargement posts</p>';
-    }
-  }
-
-  // Appel au chargement de la page
-  window.addEventListener('DOMContentLoaded', () => {
-    loadUserProfile();
-  });
-
-  // Ton handler pour la mise à jour générale du profil (à compléter si besoin)
-  async function handleUpdateProfile(event) {
-    event.preventDefault();
-    // Récupère les champs
-    const username = document.getElementById('editUsername').value.trim();
-    const email = document.getElementById('editEmail').value.trim();
-    const password = document.getElementById('editPassword').value;
-
-    const token = localStorage.getItem('token');
-    try {
-      const res = await fetch('/api/user/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-      if (!res.ok) {
-        const error = await res.json();
-        alert('Erreur : ' + (error.msg || 'Erreur inconnue'));
-        return;
-      }
-      alert('Profil mis à jour !');
-      loadUserProfile(); // recharge les infos à jour
-    } catch (err) {
-      console.error(err);
-      alert('Erreur mise à jour profil');
-    }
-  }
-</script>
-
+}
+    </script>
 
     <!-- Modal Login/Signup -->
     <div id="authModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
